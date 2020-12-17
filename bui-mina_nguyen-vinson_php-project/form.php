@@ -1,6 +1,6 @@
 <!--
     - Displays a blank form for Student data to be input.
-    
+
     Delete later, just a self-note:
     - Home (index.php) => Add Student (prepare_query.php) => (process_query.php) => back to Home (index.php)
 -->
@@ -21,21 +21,22 @@
     <h1>Administering DB From a Form</h1>
     <h2>Add a student...</h2>
 
-    <!-- ------------------- -->
-    <?php
+<!-- ------------------- -->
+<?php
 
-        session_start();
+    session_start();
 
-        //check for errors. if so, display and clear after display
-        if( isset($_SESSION['errorMessages']) ){
-            echo $_SESSION['errorMessages'];
-            unset($_SESSION['errorMessages']);
-        }
-    ?>
-    <!-- ------------------- -->
+    //check for errors. if so, display and clear after display
+    if( isset($_SESSION['errorMessages']) ){
+        echo $_SESSION['errorMessages'];
+        unset($_SESSION['errorMessages']);
+    }
+
+?>
+<!-- ------------------- -->
 
         <!-- Display Student Table -->
-        <form method="POST" action="process_query.php">
+        <form method="POST" action="">
             <fieldset>
                 <legend>Add a Record</legend>
                 <input  type="hidden" 

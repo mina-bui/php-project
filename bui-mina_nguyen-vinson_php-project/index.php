@@ -15,22 +15,14 @@
 	<link 	rel     ="stylesheet" 
 			href    ="http://bcitcomp.ca/twd/css/style.css" />
 	<style>
-		table,
-		tbody,
-		tr,
-		td,
-		th {
-			border: 1px solid black;
-		}
-		tr,
-		td,
-		th {
-			padding: 5px 15px;
-		}
+		table, tbody, tr, td, th { border: 1px solid black; }
+		tr, td, th { padding: 5px 15px; }
 	</style>
 </head>
 <body>
 <h1>Administering DB From a Form</h1>
+
+<!-- ------------------- -->
 <?php
 
 	session_start();
@@ -40,19 +32,23 @@
 		echo $_SESSION['errorMessages'];
 		unset($_SESSION['errorMessages']);
 	}
+
 ?>
+<!-- ------------------- -->
+
+
 	<div id="dbtable">
 		<h2>Students:</h2>
 		<!-- link to prepare_query.php to add a student to db -->
-		<p><a href="prepare_query.php?add">Add a Student</a></p>
+		<p><a href="form.php">Add a Student</a></p>
 		<!-- Display Student Table -->
 		<table>
 			<tbody>
 				<!-- sort by id, first name, last name options -->
 				<tr>
-					<th><a href="/index.php/?sortby=id">Id</a></th>
-					<th><a href="/index.php/?sortby=firstname">First Name</a></th>
-					<th><a href="/index.php/?sortby=lastname">Last Name</a></th>
+					<th><a href="#0">Id</a></th>
+					<th><a href="#0">First Name</a></th>
+					<th><a href="#0">Last Name</a></th>
 				</tr>
 				<!-- students (id, firstname, lastname, delete, update options) -->
 				<tr>

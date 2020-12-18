@@ -1,8 +1,8 @@
 <!--
-    - Displays a blank form for Student data to be input.
-
-    Delete later, just a self-note:
-    - Home (index.php) => Add Student (prepare_query.php) => (process_query.php) => back to Home (index.php)
+    - Display the record information of the record they chose to delete.
+    - Give them one last chance to change their mind, 
+        - eg: ask the user if they are sure they want to delete the record,
+        - and display a form with a radio button option of ‘yes’ and ‘no’.
 -->
 
 <!DOCTYPE html>
@@ -38,7 +38,8 @@
             <fieldset>
                 <legend>Delete a Record</legend>
                 <!-- placeholder text -->
-                <p>Student Number, Firstname Lastname</p>
+                <p>'Student Number, Firstname Lastname</p>
+                <p>Are you sure? </p>
                 <!-- yes or no? -->
                 <input  type="radio" 
                         name="yes-or-no" 
@@ -55,7 +56,7 @@
                 <!-- submit button -->
                 <input  type="submit" 
                         value="Submit" 
-                        class="button"/>
+                        class="button"/>    <!-- NOTE: doesn't work yet -->
             </fieldset>
         </form>
         <p>

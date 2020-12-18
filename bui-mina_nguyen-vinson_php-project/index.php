@@ -51,16 +51,16 @@
 
 	echo "<h2>Students</h2>";
 	// link to form.php to add a student to the database 
-	echo "<p><a href='insert_form.php'>Add a Student</a></p>";
+	echo "<p><a href='insert_form.php'>Add a Student</a></p>";				// NOTE: doesn't work yet
 
 	// Display Student Table
 	echo "<table id='db-table'>";
 	echo "<tbody>";	
 	// Sort by: ID, First Name, Last Name
 	echo "<tr>";
-	echo "<th><a href='index.php?sortby=id'>ID</a></th>";
-	echo "<th><a href='index.php?sortby=firstname'>First Name</a></th>";
-	echo "<th><a href='index.php?sortby=lastname'>Last Name</a></th>";
+	echo "<th><a href='index.php?sortby=id'>ID</a></th>"; 					// NOTE: doesn't work yet
+	echo "<th><a href='index.php?sortby=firstname'>First Name</a></th>"; 	// NOTE: doesn't work yet
+	echo "<th><a href='index.php?sortby=lastname'>Last Name</a></th>"; 		// NOTE: doesn't work yet
 	echo "</tr>";
 	echo "</tbody>";
 	
@@ -71,8 +71,8 @@
 		echo "<td>" . $record[1] . "</td>";	
 		echo "<td>" . $record[2] . "</td>";		
 		// delete and update => this needs work!
-		echo "<td><a href='delete_form.php'>delete</a></td>";
-		echo "<td><a href='update_form.php'>update</a></td>";	
+		echo "<td><a href='delete_form.php'>delete</a></td>"; 				// NOTE: doesn't work yet
+		echo "<td><a href='update_form.php'>update</a></td>"; 				// NOTE: doesn't work yet
 /*
 		// how we did it in class => loop through the $record array
 		// note: record = row, field = column

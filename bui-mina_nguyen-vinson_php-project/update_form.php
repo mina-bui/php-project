@@ -1,8 +1,7 @@
 <!--
-    - Displays a blank form for Student data to be input.
-
-    Delete later, just a self-note:
-    - Home (index.php) => Add Student (prepare_query.php) => (process_query.php) => back to Home (index.php)
+    - Display a form with fields for Student Number, First and Last names. 
+    - Pre-populate these fields with the current record data. 
+    - Add a Submit button.
 -->
 
 <!DOCTYPE html>
@@ -47,6 +46,7 @@
                 <input  type="text" 
                         name="studentnumber" 
                         id="studentnumber" 
+                        value="TEXT PLACEHOLDER"
                         required />
 
                 <br />
@@ -59,6 +59,7 @@
                 <input  type="text" 
                         name="firstname" 
                         id="firstname" 
+                        value="TEXT PLACEHOLDER"
                         required />
                 <br />
                 <br />
@@ -70,12 +71,13 @@
                 <input  type="text" 
                         name="lastname" 
                         id="lastname"  
+                        value="TEXT PLACEHOLDER"
                         required/>
                 <br>
                 <!-- submit button -->
                 <input  type="submit" 
                         value="Submit" 
-                        class="button"/>
+                        class="button"/>    <!-- NOTE: doesn't work yet -->
             </fieldset>
         </form>
         <p>

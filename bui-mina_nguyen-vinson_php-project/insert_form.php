@@ -1,8 +1,5 @@
 <!--
-    - Displays a blank form for Student data to be input.
-
-    Delete later, just a self-note:
-    - Home (index.php) => Add Student (prepare_query.php) => (process_query.php) => back to Home (index.php)
+    - Display a form with inputs for Student Number, First and Last names, and a Submit button.
 -->
 
 <!DOCTYPE html>
@@ -83,7 +80,7 @@
                 <!-- submit button -->
                 <input  type="submit" 
                         value="Submit" 
-                        class="button"/>
+                        class="button"/>  <!-- NOTE: doesn't work yet -->
             </fieldset>
         </form>
         <p>

@@ -70,20 +70,17 @@ $lastname      = $database->real_escape_string($lastname);
 //--- Student Number
 $query  = "SELECT * FROM students WHERE BINARY id ='$studentnumber';";
 $result = $database->query( $query );
-
 //if a record matches the student number, then this student number is already in use and cannot be duplicated
 if($result->num_rows > 0){
 
-	$_SESSION['errorMessages'] = "<p class='error'>The firstname '$firstname' is already in use, please choose a different one...</p>";
+	$_SESSION['errorMessages'] = "<p class='error'>The studentnumber: '$studentnumber' is already in use, please choose a different one...</p>";
 	header("Location: insert_form.php");
 	die();
 }
-
-
-//--- Firstname
-$query = "SELECT * FROM students WHERE BINARY id ='$studentnumber';";
+/*
+//--- Firstname (probably don't need...?)
+$query = "SELECT * FROM students WHERE BINARY firstname ='$firstname';";
 $result = $database->query( $query );
-
 //if a record matches the student number, then this student number is already in use and cannot be duplicated
 if($result->num_rows > 0){
 
@@ -91,32 +88,26 @@ if($result->num_rows > 0){
 	header("Location: insert_form.php");
 	die();
 }
+*/
 
-
-// -------------------------
-// random notes to self:
-    // the following sort queries *might* be moved to the index.php page...
-    // ****     REMEMBER TO NOT FORGET TO ADD $_GET query string!!! tomorrow....
-    // sort by ___ section obtained from _session11 => 07_db_sort_records_after.php (note to self)
-// -------------------------
-
-require_once("dbinfo.php");
-// default sort settings
-$sortOrder = "lastname";
-// choices to sort by...
-$validChoices = array("id", "firstname", "lastname");
-
-//attempt db connection
-$database = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-
-// if no errors, good. if errors, send error message and end
-if( mysqli_connect_errno() != 0  ){
-	die("<p>Could not connect to the database.</p>");	
+// Store into Database!
+//--- Student Number
+$query = "INSERT INTO students (id, firstname, lastname) VALUES('$studentnumber','$firstname','$lastname');";
+$result = $database->query( $query );
+//ensure our attempt to insert was a success
+if( $database->affected_rows == 0){
+		$_SESSION['errorMessages'] = "<p>There was a problem adding you to our database. Please try again.</p>";
+		header("Location: register.php");
+		die();
 }
-
-
-
-//
+/* close MySQL connection */
+$database->close();
+/* if the script gets this far,
+	this user was successfully added to our database
+*/
+$_SESSION['errorMessages'] = "<p>You have been registered as awesome with us. Feel free to login whenever you like.</p>";
+header("Location: login.php");
+die();
 
 // ------------------------- SORT BY ID ---------------------------
 // sql queries go here

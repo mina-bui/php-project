@@ -49,7 +49,7 @@
 		}
 	}
 	else {
-			echo "<p>A sort option was not chosen. The table will sort by <code>'".$sortOrder."'</code> by default.</p>";	
+			echo "<p>The table will sort by <code>'".$sortOrder."'</code> by default.</p>";	
 		}
 		
 	$database = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);			// attempt db connection

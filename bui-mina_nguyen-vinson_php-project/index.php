@@ -13,19 +13,15 @@
 	<meta 	name    ="viewport" 
 			content ="width=device-width,initial-scale=1">			
 	<link 	rel     ="stylesheet" 
-			href    ="http://bcitcomp.ca/twd/css/style.css" />
-	<style>
-		table, tbody, tr, td, th { border: 1px solid black; }
-		tr, td, th { padding: 5px 15px; }
-	</style>
+			href    ="style.css" />
 </head>
 <body>
 <header>
 	<h1>Administering DB From a Form</h1>
 </header>
 
-<!-- ------------------- -->
 <?php
+	// BASICS
 
 	session_start();
 
@@ -35,6 +31,8 @@
 		unset($_SESSION['errorMessages']);
 	}
 	// ------------------------------------------------------------------------
+	// CONNECTING TO DB AND PREPARING SQL QUERY
+
 	// load dbinfo.php to connect to db
 	require_once("dbinfo.php");
 	// connect to db
@@ -48,44 +46,40 @@
 	// run query and put results in variable
 	$result = $database->query( $query );
 
-	/*
-	a SELECT returns a result_set Object.
-	the object contains zero or more arrays,
-	one array for each record 
+	// ------------------------------------------------------------------------
+	// DISPLAYING THE TABLE
 
-	each record is an array with field values
-	assigned to each index
-
-		$result is an Object
-		$result->fetch_row()
-		returns an array of record data
-		each field assigned an index
-		
-		$record is an array
-	*/
-
-	echo "<h2>Students:</h2>";
+	echo "<h2>Students</h2>";
 	// link to form.php to add a student to the database 
-	echo "<p><a href='form.php'>Add a Student</a></p>";
+	echo "<p><a href='insert_form.php'>Add a Student</a></p>";
 
 	// Display Student Table
-	echo "<table>";
+	echo "<table id='db-table'>";
 	echo "<tbody>";	
 	// Sort by: ID, First Name, Last Name
 	echo "<tr>";
-	echo "<th><a href='#0'>Id</a></th>";
-	echo "<th><a href='#0'>First Name</a></th>";
-	echo "<th><a href='#0'>Last Name</a></th>";
+	echo "<th><a href='index.php?sortby=id'>ID</a></th>";
+	echo "<th><a href='index.php?sortby=firstname'>First Name</a></th>";
+	echo "<th><a href='index.php?sortby=lastname'>Last Name</a></th>";
 	echo "</tr>";
 	echo "</tbody>";
 	
+	// get get the rows in $record
 	while( $record = $result->fetch_row()  ){
-		//loop through the $record array
 		echo "<tr>";
+		echo "<td>" . $record[0] . "</td>";		
+		echo "<td>" . $record[1] . "</td>";	
+		echo "<td>" . $record[2] . "</td>";		
+		// delete and update => this needs work!
+		echo "<td><a href='delete_form.php'>delete</a></td>";
+		echo "<td><a href='update_form.php'>update</a></td>";	
+/*
+		// how we did it in class => loop through the $record array
 		// note: record = row, field = column
-		foreach( $record as $field ){
+ 		foreach( $record as $field ){
 			echo "<td>" . $field . "</td>";
-		}
+		} 
+*/
 		echo "</tr>";	
 	}
 	echo "</table>";
@@ -94,16 +88,6 @@
 	$database->close();
 
 ?>
-
-<!--
-	<tr>
-		<td>A00000001</td>
-		<td>John</td>
-		<td>Smith</td>
-		<td><a href="#0">Delete</a></td>
-		<td><a href="#0">Update</a></td>
-	</tr>
--->
 
 </body>
 </html>

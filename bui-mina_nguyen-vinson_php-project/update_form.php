@@ -14,18 +14,16 @@
 	<meta 	name    ="viewport" 
 			content ="width=device-width,initial-scale=1">			
 	<link 	rel     ="stylesheet" 
-			href    ="http://bcitcomp.ca/twd/css/style.css" />
+			href    ="style.css" />
 </head>
 
 <body>
 <header>
     <h1>Administering DB From a Form</h1>
 </header>
-    <h2>Add a student...</h2>
+    <h2>Update a Student</h2>
 
-<!-- ------------------- -->
 <?php
-
     session_start();
 
     //check for errors. if so, display and clear after display
@@ -33,46 +31,56 @@
         echo $_SESSION['errorMessages'];
         unset($_SESSION['errorMessages']);
     }
-
 ?>
-<!-- ------------------- -->
 
         <!-- Display Student Table -->
-        <form method="POST" action="">
+        <form method="POST" action="scripts.php">
             <fieldset>
-                <legend>Add a Record</legend>
-                <input  type="hidden" 
-                        name="add" 
-                        value="add">
+                <legend>Update a Record</legend>
+
                 <!-- student number -->
+                <br />
+                <label  for="studentnumber">
+                    Student #:
+                </label>
+                <br />
                 <input  type="text" 
                         name="studentnumber" 
-                        id="studentnumber" />
-                <label  for="studentnumber">
-                    - Student #
-                </label>
+                        id="studentnumber" 
+                        required />
+
+                <br />
                 <br />
                 <!-- first name -->
+                <label  for="firstname">
+                    First Name:
+                </label>
+                <br />
                 <input  type="text" 
                         name="firstname" 
-                        id="firstname" />
-                <label  for="firstname">
-                    - First Name
-                </label>
+                        id="firstname" 
+                        required />
+                <br />
                 <br />
                 <!-- last name -->
-                <input  type="text" 
-                        name="lastname" 
-                        id="lastname" />
                 <label  for="lastname">
-                    - Last Name
+                    Last Name:
                 </label>
                 <br />
+                <input  type="text" 
+                        name="lastname" 
+                        id="lastname"  
+                        required/>
+                <br>
                 <!-- submit button -->
                 <input  type="submit" 
-                        value="Submit" />
+                        value="Submit" 
+                        class="button"/>
             </fieldset>
         </form>
+        <p>
+            <a href="index.php">Go Back</a>
+        </p>
 </body>
 
 </html>

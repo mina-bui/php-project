@@ -33,7 +33,7 @@
 ?>
 
         <!-- Display Student Table -->
-        <form method="POST" action="scripts.php">
+        <form method="POST" action="addinfo.php">
             <fieldset>
                 <legend>Add a Record</legend>
 

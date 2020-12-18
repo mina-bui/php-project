@@ -34,7 +34,7 @@
 ?>
 
         <!-- Display Student Table -->
-        <form method="POST" action="scripts.php">
+        <form method="POST" action="addinfo.php">
             <fieldset>
                 <legend>Delete a Record</legend>
                 <!-- placeholder text -->

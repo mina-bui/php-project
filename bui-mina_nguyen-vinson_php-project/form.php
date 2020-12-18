@@ -18,7 +18,9 @@
 </head>
 
 <body>
+<header>
     <h1>Administering DB From a Form</h1>
+</header>
     <h2>Add a student...</h2>
 
 <!-- ------------------- -->

@@ -21,6 +21,10 @@
 </header>
 
 <?php
+	// note: 
+		//	will probably replace this with the updated vers from scripts.php 
+		// (which includes the proper method from class)
+	// ------------------------------------------------------------------------
 	// BASICS
 
 	session_start();
@@ -58,9 +62,9 @@
 	echo "<tbody>";	
 	// Sort by: ID, First Name, Last Name
 	echo "<tr>";
-	echo "<th><a href='index.php?sortby=id'>ID</a></th>"; 					// NOTE: doesn't work yet
-	echo "<th><a href='index.php?sortby=firstname'>First Name</a></th>"; 	// NOTE: doesn't work yet
-	echo "<th><a href='index.php?sortby=lastname'>Last Name</a></th>"; 		// NOTE: doesn't work yet
+	echo "<th><a href='index.php?sortbyid'>ID</a></th>"; 					// NOTE: doesn't work yet
+	echo "<th><a href='index.php?sortbyfirstname'>First Name</a></th>"; 	// NOTE: doesn't work yet
+	echo "<th><a href='index.php?sortbylastname'>Last Name</a></th>"; 		// NOTE: doesn't work yet
 	echo "</tr>";
 	echo "</tbody>";
 	

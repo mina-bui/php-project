@@ -44,14 +44,16 @@
                 <input  type="radio" 
                         name="yes-or-no" 
                         id="yes"  
-                        value="yes"/>
+                        value="yes"
+                        required />
                 <label  for="yes">Yes</label>
                 <br>
                 <input  type="radio" 
                         name="yes-or-no" 
                         id="no"  
                         value="no"/>
-                <label  for="no">No</label>
+                <label  for="no"
+                        required >No</label>
                 <br>
                 <!-- submit button -->
                 <input  type="submit" 

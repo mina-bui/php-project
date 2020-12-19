@@ -34,7 +34,7 @@
     ?>
 
     <!-- Display Student Table -->
-    <form method="POST" action="addinfo.php">
+    <form method="POST" action="insert_info.php">
         <fieldset>
             <legend>Add a Record</legend><br />
             <!-- <input type="hidden" name="add" value="add"> -->

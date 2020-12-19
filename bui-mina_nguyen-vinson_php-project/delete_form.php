@@ -17,7 +17,7 @@
     <header><h1>Administering DB From a Form</h1></header>
     <h2>Delete a Student</h2>
 
-    <form method="POST" action="addinfo.php">
+    <form method="POST" action="delete_info.php">
 
     <?php
     

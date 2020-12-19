@@ -50,7 +50,7 @@ if (trim($_POST['studentnumber']) == "" ||
 	die();
 }
 */
-
+/*
 //--- METHOD 2
 // Flag to determine if any problems are encountered
 $isValid = true;
@@ -91,7 +91,20 @@ if(!$isValid){
 	header("Location: insert_form.php");
 	die();
 }
-
+*/
+//--- METHOD 3
+/* validate the form fields: ensure form data is set */
+if(!isset($_POST['studentnumber']) || !isset($_POST['firstname']) || !isset($_POST['lastname']) ){
+	$_SESSION['errorMessages'] = "<p>Please fill in the student information or go back</p>";
+	header("Location: insert_form.php");
+	die();
+}
+/* validate the form fields: ensure form fields contain data */
+if( trim($_POST['studentnumber']) =="" ||  trim($_POST['firstname']) =="" ||  trim($_POST['lastname']) =="" ){
+	$_SESSION['errorMessages'] = "<p>Please fill in the form...</p>";
+	header("Location: insert_form.php");
+	die();
+}
 
 // Store form field data in variables
 $studentnumber = trim($_POST['studentnumber']);

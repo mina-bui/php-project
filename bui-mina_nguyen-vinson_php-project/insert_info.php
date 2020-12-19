@@ -25,7 +25,8 @@ $lastname      = "";
 // ---------------------- FORM VALIDATION -------------------------
 // - was the form filled out correctly?
 // - if not, show error message & send back to index.php
-
+/*
+// METHOD 1
 // Validate the form fields; to make sure that form data is set
 if (!isset($_POST['studentnumber']) ||
 	!isset($_POST['firstname'])     ||
@@ -45,6 +46,49 @@ if (trim($_POST['studentnumber']) == "" ||
 	header("Location: index.php");
 	die();
 }
+*/
+
+//--- METHOD 2
+// Flag to determine if any problems are encountered
+$isValid = true;
+
+//Array for error messages
+$errorMessages = array();
+
+// Pattern used for student number format
+$pattern = "/^a00[0-9]{6}$/i";
+
+// Form fields are set and have values
+//--- Student Number
+if(!isset($_POST['studentnumber']) || $_POST['studentnumber'] == ""){
+	$errorMessages[] = "Student number must be filled out<br />";
+}
+//--- Firstname
+if(!isset($_POST['firstname']) || $_POST['firstname'] == ""){
+	$errorMessages[] = "Firstname must be filled out<br />";
+	$isValid = false;
+}
+//--- Lastname
+if(!isset($_POST['lastname']) || $_POST['lastname'] == ""){
+	$errorMessages[] = "Lastname must be filled out<br />";
+	$isValid = false;
+}
+
+// Test for correct student number format
+if(preg_match($pattern, trim($_POST['studentnumber'])) != 1){
+	$errorMessages[] = "Student Number is not in correct format<br />";
+	$isValid = false;
+}
+
+// Output the stored error messages in the array
+if(!$isValid){
+	@session_start();
+	$_SESSION['errorMessages'] = $errorMessages;
+	
+	header("Location: insert_form.php");
+	die();
+}
+
 
 // Store form field data in variables
 $studentnumber = trim($_POST['studentnumber']);

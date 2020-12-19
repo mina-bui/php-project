@@ -17,19 +17,24 @@
     <h2>Add a Student</h2>
 
     <?php
-
-    @session_start();
-    require_once("dbinfo.php");
-
-    $database = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);			// attempt db connection
-    if ( mysqli_connect_errno() != 0  ) {								// if errors, send error message and end
-        die("<p>Sorry, we could not connect to the database.</p>");	
-    }
-
+    /*
+    // Method 1
+    $errorMessages = "";
+    session_start();
     if( isset($_SESSION['errorMessages']) ){                            // check for errors. if so, display & then clear
-        echo $_SESSION['errorMessages'];
+        $errorMessages =  $_SESSION['errorMessages'];
         unset($_SESSION['errorMessages']);
     }
+    */
+    @session_start();
+    
+    $errorMessages	= "";
+	
+	if( isset($_SESSION['errorMessages']) ){
+		$errorMessages = "<div class='error'>Error:".$_SESSION['errorMessages']."</div>";
+	}
+	echo $errorMessages;
+	unset($_SESSION['errorMessages']);
 
     ?>
 

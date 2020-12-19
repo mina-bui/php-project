@@ -1,4 +1,7 @@
 <?php
+ob_start();
+?>
+<?php
 // note: use "02_php_mysql_results_after.php" as reference for insert/delete/update queries
 
 // this works!!! just needs to make sure fields are in the correct format, and send errors if not
@@ -105,6 +108,14 @@ $lastname      = trim($_POST['lastname']);
 	}
 }
 */
+@session_start();
+    require_once("dbinfo.php");
+
+    $database = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);			// attempt db connection
+    if ( mysqli_connect_errno() != 0  ) {								// if errors, send error message and end
+        die("<p>Sorry, we could not connect to the database.</p>");	
+    }
+
 
 //IMPORTANT: use real_escape_string() to protect against SQL injection
 $studentnumber = $database->real_escape_string($studentnumber);

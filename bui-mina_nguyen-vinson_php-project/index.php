@@ -22,17 +22,21 @@
 
 <?php
 	// --------------------------------------
-	// THE BASICS
+	// THE BASICS -  DB, ERRORS, ETC
 
-	session_start();
+	@session_start();
+	require_once("dbinfo.php");											// load dbinfo.php to connect to db
 
-	// check for errors. if so, display and clear after display
-	if( isset($_SESSION['errorMessages']) ){
+	$database = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);			// attempt db connection
+	if ( mysqli_connect_errno() != 0  ) {								// if errors, send error message and end
+		die("<p>Sorry, we could not connect to the database.</p>");	
+	}
+
+	if( isset($_SESSION['errorMessages']) ){				// check for errors. if so, display and clear after display
 		echo $_SESSION['errorMessages'];
 		unset($_SESSION['errorMessages']);
 	}
 
-	require_once("dbinfo.php");								// load dbinfo.php to connect to db
 	$sortOrder = "id";										// default sorting is by id
 	$validChoices = array("id","firstname","lastname");		// choices to sort by...
 
@@ -48,28 +52,18 @@
 			echo "<p><code>'".$_GET['choice']."'</code> is NOT a valid sort choice. You may only sort by <code>'ID'</code>, <code>'first name'</code>, and <code>'last name'</code>.</p>";
 		}
 	}
-	else {
-			echo "<p>The table will sort by <code>'".$sortOrder."'</code> by default.</p>";	
-		}
 		
-	$database = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);			// attempt db connection
-	if ( mysqli_connect_errno() != 0  ) {								// if errors, send error message and end
-		die("<p>Sorry, we could not connect to the database.</p>");	
-	}
-
 	$sortOrder = $database->real_escape_string($sortOrder);				// use real_escape_string() to prevent sql attacks
 
 	// --------------------------------------
-	// IF USER SORTED CORRECTLY, THEN SORT TABLE
-	// - Display Student Table
-	// - Sort by: ID, First Name, Last Name
+	// IF USER SORTED CORRECTLY, THEN SORT TABLE BY ID / FIRSTNAME / LASTNAME
 
 	echo "<h2>Students</h2>";
 	echo "<p><a href='insert_form.php'>Add a Student</a></p>";							// link to form.php to add a student to the database 
 
 	$query = "SELECT id, firstname, lastname FROM students ORDER BY ".$sortOrder.";";	// select a way to sort the table, and then sort the table by that choice
 	$result = $database->query($query);
-	echo "<table id='db-table'>";
+	echo "<table id='db-table'>";														// display student table
 
 	// --------------------------------------
 	// SORT OPTIONS AS HYPERLINKS IN TABLE HEADINGS
@@ -77,7 +71,7 @@
 	// query strings attached to hrefs => sends data from one request to another
 	$fieldObjects = $result->fetch_fields();
 	echo "<tr>";
-	foreach($fieldObjects as $fieldObject){
+	foreach ($fieldObjects as $fieldObject) {
 		echo "<th><a href='index.php?choice=$fieldObject->name'>" .$fieldObject->name. "</a></th>" ;
 	}
 	echo "</tr>";
@@ -85,35 +79,18 @@
 	// --------------------------------------
 	// CREATING LINKS TO DELETE/UPDATE USERS
 
-	// => link requests this page 
-	// => includes a query string to identify which student was clicked
-	while(   $record = $result->fetch_assoc() ){
+	// => link requests this page => includes a query string to identify which student was clicked
+	while ( $record = $result->fetch_assoc() ) {
 		echo "<tr>";
 		echo "<td>" . $record["id"] . "</td>" ;
 		echo "<td>" . $record["firstname"] . "</td>" ;
 		echo "<td>" . $record["lastname"] . "</td>" ;
-		//echo "<td><a href='delete_form.php'>delete</a></td>"; // code without the query string 
-		//echo "<td><a href='update_form.php'>update</a></td>";	// code without the query string 
 		echo "<td><a href='delete_form.php?id=".$record["id"]."'>delete</a></td>";
 		echo "<td><a href='update_form.php?id=".$record["id"]."'>update</a></td>";
 		echo "</tr>";		
 	}
 	echo "</table>";
 
-	// ------------------ this code might be moved... ------------------------
- 	// selecting an id => => use id value to retrieve the record from the db
-	if( isset($_GET['id']) ){
-		$id = $database->real_escape_string($_GET['id']);
-		$query = "SELECT id, firstname, lastname FROM students WHERE id='".$id."';";
-		$result = $database->query($query);
-		while(   $record = $result->fetch_assoc() ){
-			echo "<fieldset>";
-			echo "<legend>Student number " . $record["id"] . " was selected</legend>" ;
-			echo "<p>Hello, " . $record["firstname"] . " " . $record["lastname"] . "!</p>" ;
-			echo "</fieldset>";
-		}	
-	}
-	// ------------------------------------------------------------------------
 	$database->close();		// close the database connection
 	
 ?>

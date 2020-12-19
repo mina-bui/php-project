@@ -1,7 +1,7 @@
 <?php
 
 const DB_HOST	 = "localhost";			
-const DB_USER	 = "vinson";	
-const DB_PASS	= "vnguyen6";	
+const DB_USER	 = "minabui";	
+const DB_PASS	= "bcit";	
 const DB_NAME 	= "bcit";		
 ?>

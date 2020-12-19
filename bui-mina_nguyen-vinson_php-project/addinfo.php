@@ -93,38 +93,22 @@ if($result->num_rows > 0){
 // Store into Database!
 //--- Student Number
 $query = "INSERT INTO students (id, firstname, lastname) VALUES('$studentnumber','$firstname','$lastname');";
-
 $result = $database->query( $query );
-
 //ensure our attempt to insert was a success
 if( $database->affected_rows == 0){
-		$_SESSION['errorMessages'] = "<p>There was a problem adding the given information to our database. Please try again.</p>";
-		header("Location: insert_form.php");
+		$_SESSION['errorMessages'] = "<p>There was a problem adding you to our database. Please try again.</p>";
+		header("Location: index.php");
 		die();
 }
-
 /* close MySQL connection */
 $database->close();
-
-//if the script gets this far, the infomation was added successfully
-
-
-$_SESSION['errorMessages'] = "<p>You have been sucessfully added the student information</p>";
+/* if the script gets this far,
+	this user was successfully added to our database
+*/
+$_SESSION['errorMessages'] = "<p>You have been registered as awesome with us. Feel free to login whenever you like.</p>";
 header("Location: index.php");
 die();
 
-// ------------------------- SORT BY ID ---------------------------
-// sql queries go here
-
-// ---------------------- SORT BY FIRST NAME ----------------------
-// sql queries go here
-
-// ---------------------- SORT BY LAST NAME -----------------------
-// sql queries go here
-
-
-
-// ////////////////////////////////////////////////////////////////////////////////////////////////
 // note: use "02_php_mysql_results_after.php" as reference for the following 3 queries
 
 
@@ -193,6 +177,8 @@ die();
 // if so, send back to index.php
 
 // if not, display messages, eg: “The record could not be updated as requested.”
+
+
 
 
 ?>

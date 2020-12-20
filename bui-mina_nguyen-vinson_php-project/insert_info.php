@@ -156,7 +156,6 @@ if( strlen($lasttname) < MINIMUM_NAME_LENGTH ){
 */
 
 
-
 // const to determine the correct format of the student number!
 $pattern = "/^a00[0-9]{6}$/i";
 
@@ -169,7 +168,6 @@ $errorMessages = array();
 // validate the form fields: ensure form data is set 
 if(!isset($_POST['studentnumber']) || !isset($_POST['firstname']) || !isset($_POST['lastname']) ){
 	$errorMessages[] = "Please fill in the student information or go back<br />";
-
 }
 
 // Store form field data in variables and normalize
@@ -181,66 +179,41 @@ $lastname      = ucfirst(strtolower(trim($_POST['lastname'])));
 // ensure student number field wasn't left empty
 if( trim($_POST['studentnumber']) ==""){
 	$errorMessages[] = "Please fill in the student number field...<br />";
-	
 }
 // ensure student number format was correct
 if (preg_match($pattern, trim($_POST['studentnumber'])) != 1){
 	$errorMessages[] = "Please adhere to the correct student number format...<br />";
-	
 }
 
 //--- Firstname
 // ensure firstname field wasn't left empty
 if( trim($_POST['firstname']) =="" ){
 	$errorMessages[] = "Please fill in the firstname field...<br />";
-	
 }
-// ensure firstname field was at least 2 characters in length
-if( strlen($firstname) < MINIMUM_NAME_LENGTH ){
-	$errorMessages[] = "Uh oh, the firstname field requires at least ".MINIMUM_NAME_LENGTH." characters.<br />";
-		
-}
-
 //--- Lastname
 // ensure firstname field wasn't left empty
 if( trim($_POST['lastname']) =="" ){
 	$errorMessages[] = "Please fill in the lastname field...<br />";
-	
+}
+
+// ensure firstname field was at least 2 characters in length
+if( strlen($firstname) < MINIMUM_NAME_LENGTH ){
+	$errorMessages[] = "Uh oh, the firstname & lastname field requires at least ".MINIMUM_NAME_LENGTH." characters.<br />";
 }
 
 
-// Problem encouter and display
+// Problem encouter and display array!
 if(  count(	$errorMessages) > 0 ){
 	foreach($errorMessages as $message){
 		echo $message . "<br>";							
 	}
 	
-
 	$_SESSION["errors"] = $errorMessages;
 
-	//forward user to login page
+	//refresh error mesages but on same page 
 	header("location: insert_form.php");
 	die();
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -293,7 +266,7 @@ $result = $database->query( $query );
 //ensure our attempt to insert was a success
 if( $database->affected_rows == 0){
 		$_SESSION['errorMessages'] = "<p>There was a problem adding the user to our database.</p>";
-		header("Location: index.php");
+		header("Location: insert_form.php");
 		die();
 }
 

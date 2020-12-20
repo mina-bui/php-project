@@ -41,6 +41,7 @@
     if( isset($_SESSION["errors"]) ){
         $errorsArray = $_SESSION["errors"];
         echo "<div class='error'>";
+        echo "<p>ERROR:</p>";
         echo "<ul>";
         foreach($errorsArray as $error){
             echo "<li>$error</li>";

@@ -93,48 +93,67 @@ if(!$isValid){
 }
 */
 //--- METHOD 3
+// const to determine the correct format of the student number!
+$pattern = "/^a00[0-9]{6}$/i";
 
-// validate the form fields: ensure form data is set */
+// const to determine the minimum length of the 
+const MINIMUM_NAME_LENGTH = 2;
+
+// validate the form fields: ensure form data is set 
 if(!isset($_POST['studentnumber']) || !isset($_POST['firstname']) || !isset($_POST['lastname']) ){
 	$_SESSION['errorMessages'] = "<p>Please fill in the student information or go back</p>";
 	header("Location: insert_form.php");
-	
-}
-
-// validate the form fields: ensure form fields contain data */
-if( trim($_POST['studentnumber']) =="" ||  trim($_POST['firstname']) =="" ||  trim($_POST['lastname']) =="" ){
-	$_SESSION['errorMessages'] = "<p>Please fill in the student information or go back</p>";
-	header("Location: insert_form.php");
 	die();
 }
 
-// validate the form fields: ensure student number is in correct format 
-$pattern = "/^a00[0-9]{6}$/i";
-
-if(preg_match($pattern, trim($_POST['studentnumber'])) != 1){
-	$_SESSION['errorMessages'] = "<p>Please insert correct student number format...</p>";
-	header("Location: insert_form.php");
-	die();
-}
-
-
-
-
-// Store form field data in variables
+// Store form field data in variables and normalize
 $studentnumber = trim($_POST['studentnumber']);
-$firstname	   = trim($_POST['firstname']);
-$lastname      = trim($_POST['lastname']);
+$firstname	   = ucfirst(strtolower(trim($_POST['firstname'])));
+$lastname      = ucfirst(strtolower(trim($_POST['lastname'])));
 
-// Ensure that the student has typed in the correct Student Number Format!
-/*
- if($formIsValid){
-	$pattern = "/^a00[0-9]{6}$/i";
-	if( preg_match($pattern, trim($_POST['studentnumber'])) != 1){
-		$validationMessages .= "An invalid studentnumber.<br />";
-		$formIsValid = false;
-	}
+//--- Student number
+// ensure student number field wasn't left empty
+if( trim($_POST['studentnumber']) ==""){
+	$_SESSION['errorMessages'] = "<p>Please fill in the student number field...</p>";
+	header("Location: insert_form.php");
+	die();
 }
-*/
+// ensure student number format was correct
+if (preg_match($pattern, trim($_POST['studentnumber'])) != 1){
+	$_SESSION['errorMessages'] = "<p>Please adhere to the correct student number format...</p>";
+	header("Location: insert_form.php");
+	die();
+}
+
+//--- Firstname
+// ensure firstname field wasn't left empty
+if( trim($_POST['firstname']) =="" ){
+	$_SESSION['errorMessages'] = "<p>Please fill in the firstname field...</p>";
+	header("Location: insert_form.php");
+	die();
+}
+// ensure firstname field was at least 2 characters in length
+if( strlen($firstname) < MINIMUM_NAME_LENGTH ){
+	$_SESSION['errorMessages'] = "<p>Uh oh, the firstname field requires at least ".MINIMUM_FNAME_LENGTH." characters.</p>";
+	header("Location: insert_form.php");
+	die();	
+}
+
+//--- Lastname
+// ensure firstname field wasn't left empty
+if( trim($_POST['lastname']) =="" ){
+	$_SESSION['errorMessages'] = "<p>Please fill in the lastname field...</p>";
+	header("Location: insert_form.php");
+	die();
+}
+// ensure lasttname field was at least 2 characters in length
+if( strlen($lasttname) < MINIMUM_NAME_LENGTH ){
+	$_SESSION['errorMessages'] = "<p>Uh oh, the lastname field requires at least ".MINIMUM_FNAME_LENGTH." characters.</p>";
+	header("Location: insert_form.php");
+	die();	
+}
+
+
 @session_start();
     require_once("dbinfo.php");
 

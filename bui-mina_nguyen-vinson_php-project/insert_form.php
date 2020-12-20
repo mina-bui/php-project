@@ -17,6 +17,7 @@
     <h2>Add a Student</h2>
 
     <?php
+    @session_start();
     /*
     // Method 1
     $errorMessages = "";
@@ -26,8 +27,8 @@
         unset($_SESSION['errorMessages']);
     }
     */
-    @session_start();
-    
+    /*
+    // Method 2 (current working)
     $errorMessages	= "";
 	
 	if( isset($_SESSION['errorMessages']) ){
@@ -35,7 +36,20 @@
 	}
 	echo $errorMessages;
 	unset($_SESSION['errorMessages']);
-
+    */
+    // Method 3 (array error handling)
+    if( isset($_SESSION["errors"]) ){
+        $errorsArray = $_SESSION["errors"];
+        echo "<div class='error'>";
+        echo "<ul>";
+        foreach($errorsArray as $error){
+            echo "<li>$error</li>";
+        }
+        echo "</ul>";
+        echo "</div>";
+        //delete a session value
+        unset( $_SESSION["errors"] );
+    }
     ?>
 
     <!-- Display Student Table -->

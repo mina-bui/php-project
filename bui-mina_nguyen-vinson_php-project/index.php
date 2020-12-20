@@ -25,6 +25,43 @@
 	// THE BASICS -  DB, ERRORS, ETC
 
 	@session_start();
+
+	//--- ERROR AND SUCCESS MESSAGES 
+    $messages = "";
+    $successMessages = "";
+
+	// Determine if any errors were found 
+	if(isset($_SESSION['errorMessages'])) {
+		// store created messages in array
+		$messages = $_SESSION['errorMessages'];
+		
+        // create UL to display the errors that the user may have encountered
+		echo "<ul>";
+		foreach($messages as $message) {
+			echo "<li>".$message."</li>";
+		}
+		echo "</ul>";
+        
+        // must unset error messages to allow user to try again
+		unset($_SESSION['errorMessages']);
+    }
+    
+    // Determine if any processes were completed correctly 
+    if(isset($_SESSION['successMessages'])) {
+		// store completeed messages in array
+		$successMessages = $_SESSION['successMessages'];
+        
+		foreach($successMessages as $successMessage){
+			// should only require 1, so no need for 
+			echo "<p>".$successMessage."</p>";
+		}
+        
+        // must unset messages
+		unset($_SESSION['successMessages']);
+    }
+
+
+
 	require_once("dbinfo.php");											// load dbinfo.php to connect to db
 
 	$database = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);			// attempt db connection
@@ -32,11 +69,9 @@
 		die("<p>Sorry, we could not connect to the database.</p>");	
 	}
 
-	if( isset($_SESSION['errorMessages']) ){				// check for errors. if so, display and clear after display
-		echo $_SESSION['errorMessages'];
-		unset($_SESSION['errorMessages']);
-	}
-
+	
+    
+    
 	$sortOrder = "id";										// default sorting is by id
 	$validChoices = array("id","firstname","lastname");		// choices to sort by...
 

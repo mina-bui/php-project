@@ -17,47 +17,49 @@
     <h2>Add a Student</h2>
 
     <?php
-    @session_start();
-    /*
-    // Method 1
-    $errorMessages = "";
+
     session_start();
-    if( isset($_SESSION['errorMessages']) ){                            // check for errors. if so, display & then clear
-        $errorMessages =  $_SESSION['errorMessages'];
-        unset($_SESSION['errorMessages']);
+    //--- ERROR AND SUCCESS MESSAGES TO DISPLAY
+    $messages = "";
+    $successMessages = "";
+
+	// Determine if any errors were found 
+	if(isset($_SESSION['errorMessages'])) {
+		// store created messages in array
+		$messages = $_SESSION['errorMessages'];
+		
+        // create UL to display the errors that the user may have encountered
+		echo "<ul>";
+		foreach($messages as $message) {
+			echo "<li>".$message."</li>";
+		}
+		echo "</ul>";
+        
+        // must unset error messages to allow user to try again
+		unset($_SESSION['errorMessages']);
     }
-    */
-    /*
-    // Method 2 (current working)
-    $errorMessages	= "";
-	
-	if( isset($_SESSION['errorMessages']) ){
-		$errorMessages = "<div class='error'>Error:".$_SESSION['errorMessages']."</div>";
-	}
-	echo $errorMessages;
-	unset($_SESSION['errorMessages']);
-    */
-    // Method 3 (array error handling)
-    if( isset($_SESSION["errors"]) ){
-        $errorsArray = $_SESSION["errors"];
-        echo "<div class='error'>";
-        echo "<p>ERROR:</p>";
-        echo "<ul>";
-        foreach($errorsArray as $error){
-            echo "<li>$error</li>";
-        }
-        echo "</ul>";
-        echo "</div>";
-        //delete a session value
-        unset( $_SESSION["errors"] );
+    
+    // Determine if any processes were completed correctly 
+    if(isset($_SESSION['successMessages'])) {
+		// store completeed messages in array
+		$successMessages = $_SESSION['successMessages'];
+        
+		foreach($successMessages as $successMessage){
+			// should only require 1, so no need for 
+			echo "<p>".$successMessage."</p>";
+		}
+        
+        // must unset messages
+		unset($_SESSION['successMessages']);
     }
     ?>
+
 
     <!-- Display Student Table -->
     <form method="POST" action="insert_info.php">
         <fieldset>
             <legend>Add a Record</legend><br />
-            <!-- <input type="hidden" name="add" value="add"> -->
+            <input type="hidden" name="add" value="add">
             <!-- student number -->
             <label for="studentnumber">Student #: </label><br />
             <input type="text" name="studentnumber" id="studentnumber" /><br /><br />

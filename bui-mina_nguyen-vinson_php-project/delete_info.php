@@ -9,94 +9,115 @@ session_start();
 
 // Determine if the given information is already in the database 
 require_once("dbinfo.php");
+
 // attempt a connection to MySQL
 $database = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+
 // determine if connection was successful
 if(mysqli_connect_errno() !=0 ){
 	$_SESSION['errorMessages'] = "<p class='error'>Uh oh... could not connect to database. Please try again later.</p>";
 	header("Location: delete_form.php");
 	die();
 }
+
 // variables for gathering typed in info
 $studentnumber = "";
 $firstname     = "";
 $lastname      = "";
 
-// ---------------------- FORM VALIDATION -------------------------
-// - was the form filled out correctly?
-// - if not, show error message & send back to index.php
+// Variables
 
-// Validate the form fields; to make sure that form data is set
-if (!isset($_POST['studentnumber']) ||
-	!isset($_POST['firstname'])     ||
-	!isset($_POST['lastname'])) {
-	
-	$_SESSION['errorMessages'] = "<p class='error'>Please register the student information...</p>";
+if( isset($_POST["studentnumber"])){
+	$studentnumber = $database->real_escape_string( trim($_POST["studentnumber"]) );
+}
+
+$firstname = trim($_POST['firstname']);
+$lastname = trim($_POST['lastname']);
+
+
+$isValid = true;
+$isSuccess = false;
+$successMessages = array();
+$errorMessages = array();
+
+if( !isset($_POST['confirm']) ){
+	$errorMessages[] = "<p style='color:red;'>$studentname $firstname $lastname record not deleted. Please select 'yes' or 'no' button.</p>";
+	$isValid = false;
+}
+
+if(!$isValid){
+	session_start();
+	$_SESSION['errorMessages'] = $errorMessages;
+   
 	header("Location: index.php");
+	//die after header forwarding,
+	//to ensure this script does not
+	//continue to run
 	die();
 }
 
-// Validate the form fields; to make sure that the form actually contains data
-if (trim($_POST['studentnumber']) == "" ||
-	trim($_POST['firstname'])     == "" ||
-	trim($_POST['lastname'])      == "" ) {
-	
-	$_SESSION['errorMessages'] = "<p class='error'>Please register the student information and type into the given fields...</p>";
-	header("Location: index.php");
-	die();
-}
 
-// Store form field data in variables
-$studentnumber = trim($_POST['studentnumber']);
-$firstname	   = trim($_POST['firstname']);
-$lastname      = trim($_POST['lastname']);
+// Delete
 
-// Ensure that the student has typed in the correct Student Number Format!
-/*
- if($formIsValid){
-	$pattern = "/^a00[0-9]{6}$/i";
-	if( preg_match($pattern, trim($_POST['studentnumber'])) != 1){
-		$validationMessages .= "An invalid studentnumber.<br />";
-		$formIsValid = false;
+if($_POST["confirm"] == "yes"){
+
+	$sql 	= "DELETE FROM students WHERE id='$studentnumber';";
+	$result = $database->query($sql);
+
+	if( $result == true){
+		echo "<p>DELETE query returned true</p>";
+	}else{
+		echo "<p>DELETE query returned false</p>";
 	}
+	//see how many records changed with last query
+	$recordsDeleted = $database->affected_rows;
+	if($recordsDeleted > 0){
+		$successMessages[] = "<p style='color:green;'>$studentnumber $firstname $lastname record deleted</p>";
+		$isSuccess = true;
+	}
+
+}else{
+	$successMessages[] = "<p style='color:green;'>The 'no' button was selected. $studentnumber $firstname $lastname record not deleted.</p>";
+	$isSuccess = true;
 }
-*/
 
-//IMPORTANT: use real_escape_string() to protect against SQL injection
-$studentnumber = $database->real_escape_string($studentnumber);
-$firstname     = $database->real_escape_string($firstname);
-$lastname      = $database->real_escape_string($lastname);
+if($isSuccess = true){
+	session_start();
+	$_SESSION['successMessages'] = $successMessages;
+   
+	header("Location: index.php");
+	//die after header forwarding,
+	//to ensure this script does not
+	//continue to run
+	die();
 
-// ----------------------
-// IS IT ALREADY IN THE TABLE?
+}
 
-// Determine if the given information is already in the database 
-//--- Student Number
-$query  = "SELECT * FROM students WHERE BINARY id ='$studentnumber';";
-$result = $database->query( $query );
-//if a record matches the student number, then this student number is already in use and cannot be duplicated
-if($result->num_rows > 0){
+// close database
 
-	$_SESSION['errorMessages'] = "<p class='error'>The studentnumber: '$studentnumber' is already in use, please choose a different one...</p>";
+$database->close();
+
+
+/*
+if(!isset($_POST['confirm']) ){
+	$_SESSION['errorMessages'] = "<p>Please choose yes or no</p>";
 	header("Location: delete_form.php");
 	die();
 }
 
-//--- Firstname (probably don't need...?)
-//$query = "SELECT * FROM students WHERE BINARY firstname ='$firstname';";
-//$result = $database->query( $query );
-//if a record matches the student number, then this student number is already in use and cannot be duplicated
-//if($result->num_rows > 0){
-//
-//	$_SESSION['errorMessages'] = "<p class='error'>The firstname '$firstname' is already in use, please choose a different one...</p>";
-//	header("Location: delete_form.php");/
-//	die();
-//}
+// if they choose Yes or No
+if( trim($_POST['confirm']) == "no" ){
+	$_SESSION['errorMessages'] = "<p>OK, please make your way back to the student list...</p>";
+	header("Location: delete_form.php");
+	die(); 
+} 
 
-// ---------------------- DELETION QUERY -------------------------
 
-// Delete From Database!
-//$query = "INSERT INTO students (id, firstname, lastname) VALUES('$studentnumber','$firstname','$lastname');";
+$studentnumber = $database->real_escape_string($studentnumber);
+$firstname     = $database->real_escape_string($firstname);
+$lastname      = $database->real_escape_string($lastname);
+
+
 $query = "DELETE FROM students WHERE id='$studentnumber';";
 $result = $database->query( $query );
 //ensure our attempt to delete was a success
@@ -108,23 +129,6 @@ if ($results == true) {
     }
 }
 
-// --------------------------------------------------------------
-// THE FOLLOWING CODE IS FROM ANOTHER LAB. just for reference 
-// DELETE query, using ->affected_rows
-// delete query returns false if query was unsuccessful (sql malformed), true if query was successful (sql accepted)
-// true =/= deletion
-// ->affected_rows determines how many records were altered by the query run
-
-/* $query = "DELETE FROM students WHERE id='S00123456';";
-//capturing the results of the query wont be as useful this time...
-$results = $database->query($query);
-if($results == true){
-	echo "<p>Running a DELETE query returned 'true'. The most recently run query was accepted by the database</p>";
-}else{
-	echo "<p>Running a DELETE query returned 'false'.</p>";
-} */
-
-// ---------------------------------------------------------------
 
 // close MySQL connection
 $database->close();
@@ -133,5 +137,9 @@ $database->close();
 $_SESSION['errorMessages'] = "<p>User successfully removed from database. </p>";
 header("Location: index.php");
 die();
+*/
+
+
+
 
 ?>

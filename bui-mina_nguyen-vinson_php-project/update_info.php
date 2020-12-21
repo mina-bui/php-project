@@ -49,7 +49,7 @@ if(!$isValid) {
 	// display error messages
 	$_SESSION['errorMessages'] = $errorMessages;
 
-	header("Location: update_form.php");
+	header("Location: index.php");
 	die();
 }
 

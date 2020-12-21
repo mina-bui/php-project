@@ -13,7 +13,7 @@ $errorMessages = array();
 // Checking for set & empty
 //--- Studentnumber
 if(!isset($_POST['studentnumber']) || $_POST['studentnumber'] == "") {
-	$errorMessages[] = "<p>Please enter Studentnumber field...</p>";
+	$errorMessages[] = "<p>Please enter Student number field...</p>";
 	$isValid = false;
 }
 //--- Firstname
@@ -30,7 +30,7 @@ if(!isset($_POST['lastname']) || $_POST['lastname'] == "") {
  // test student number format
 $pattern = "/^a0[0-9]{7}$/i";
 if( preg_match($pattern, trim($_POST['studentnumber'])) != 1) {
-	$errorMessages[] = "<p>Error: Please enter correct Studentnumber format...</p>";
+	$errorMessages[] = "<p>Error: Please enter correct Student number format...</p>";
 	$isValid = false;
 }
 
@@ -51,7 +51,7 @@ if($isValid == false) {
 	// display error messages
 	$_SESSION['errorMessages'] = $errorMessages;
 
-	header("Location: insert_form.php");
+	header("Location: index.php");
 	die();
 }
 

@@ -15,21 +15,21 @@
     <?php
     @session_start();
 
+    // load dbinfo.php to connect to db
     require_once("dbinfo.php");
 
-    $database = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);			// attempt db connection
+    // attempt db connection
+    $database = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);			
     
     // protect from sql injections
     if ( isset($_GET["update"])) {
-		$id = $database->real_escape_string( trim($_GET["update"]) );
+      $id = $database->real_escape_string( trim($_GET["update"]) );
     }
     
     // selecting an id => => use id value to retrieve the record from the db
     $query  = "SELECT id, firstname, lastname FROM students WHERE id='$id';";
-
     $result = $database->query($query);
-
-	$record = $result->fetch_assoc();
+	  $record = $result->fetch_assoc();
 
     $database->close();
     ?>
@@ -40,28 +40,24 @@
 		
 		<input type="hidden" name="update" value="update" />
         
-        <!-- Studentnumber -->
         <label for='studentnumber'>Student #:</label>
         <input type='text' 
                name='studentnumber' 
                id='studentnumber' 
                value="<?php echo $record["id"] ?>" />
 
-        <!-- Firstname -->
         <label for='firstname'>First Name:</label>
         <input type='text' 
                name='firstname' 
                id='firstname' 
                value="<?php echo $record['firstname'] ?>" />
 
-        <!-- Lastname -->
         <label for='lastname'>Last Name:</label>
         <input type='text' 
                name='lastname' 
                id='lastname' 
                value="<?php echo $record['lastname'] ?>" />
 
-        <!-- Submit button -->
         <input type='submit' value='Submit' class='button'/>
         </form>
     </fieldset>

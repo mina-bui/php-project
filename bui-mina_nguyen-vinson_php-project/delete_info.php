@@ -1,17 +1,14 @@
 <?php
-// ------------------------- THE BASICS ---------------------------
 
 @session_start();
 
-// Determine if the given information is already in the database 
+// load dbinfo.php to connect to db
 require_once("dbinfo.php");
 
-// attempt a connection to MySQL
+// attempt db connection. if errors, send error message and end
 $database = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-
-// determine if connection was successful
 if(mysqli_connect_errno() !=0 ){
-	$_SESSION['errorMessages'] = "<p class='error'>Uh oh... could not connect to database. Please try again later.</p>";
+	$_SESSION['errorMessages'] = "<p class='error'>Sorry, we could not connect to the database.</p>";
 	header("Location: delete_form.php");
 	die();
 }
@@ -29,9 +26,10 @@ if( isset($_POST["studentnumber"])){
 $firstname = trim($_POST['firstname']);
 $lastname  = trim($_POST['lastname']);
 
-
 $isValid = true;
 $isSuccess = false;
+
+//--- ERROR AND SUCCESS MESSAGES 
 $successMessages = array();
 $errorMessages = array();
 
@@ -43,15 +41,12 @@ if( !isset($_POST['confirm']) ){
 if(!$isValid){
 	session_start();
 	$_SESSION['errorMessages'] = $errorMessages;
-   
 	header("Location: index.php");
-	
 	die();
 }
 
 
 // Delete
-
 if($_POST["confirm"] == "yes"){
 
 	$sql 	= "DELETE FROM students WHERE id='$studentnumber';";
@@ -62,6 +57,7 @@ if($_POST["confirm"] == "yes"){
 	}else{
 		echo "<p>DELETE query returned false</p>";
 	}
+
 	//see how many records changed with last query
 	$recordsDeleted = $database->affected_rows;
 	if($recordsDeleted > 0){
@@ -77,19 +73,11 @@ if($_POST["confirm"] == "yes"){
 if($isSuccess = true){
 	session_start();
 	$_SESSION['successMessages'] = $successMessages;
-   
 	header("Location: index.php");
-	
 	die();
 
 }
 
-// close database
-
 $database->close();
-
-
-
-
 
 ?>

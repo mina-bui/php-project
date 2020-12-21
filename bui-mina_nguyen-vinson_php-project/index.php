@@ -18,8 +18,8 @@
 	session_start();
 
 	//--- ERROR AND SUCCESS MESSAGES 
-    $messages = "";
-    $successMessages = "";
+    $messages 			= "";
+    $successMessages 	= "";
 
 	// Determine if any errors were found 
 	if(isset($_SESSION['errorMessages'])) {
@@ -50,33 +50,36 @@
 		unset($_SESSION['successMessages']);
     }
 	
-	
-
 	$sortOrder = "id";
 	
 	if(isset($_GET['sortby'])) {
 		$sortOrder = $_GET['sortby'];
 	}
 	
-	require_once("dbinfo.php");											// load dbinfo.php to connect to db
+	// load dbinfo.php to connect to db
+	require_once("dbinfo.php");											
 
-	$database = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);			// attempt db connection
-	if ( mysqli_connect_errno() != 0  ) {								// if errors, send error message and end
+	// attempt db connection. if errors, send error message and end
+	$database = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);			
+	if ( mysqli_connect_errno() != 0  ) {
 		die("<p>Sorry, we could not connect to the database.</p>");	
 	}
 
-	$sortOrder = $database->real_escape_string($sortOrder);				// use real_escape_string() to prevent sql attacks
+	// use real_escape_string() to prevent sql attacks
+	$sortOrder = $database->real_escape_string($sortOrder);
 
 	// --------------------------------------
 	// IF USER SORTED CORRECTLY, THEN SORT TABLE BY ID / FIRSTNAME / LASTNAME
 
 	echo "<h2>Students</h2>";
-	echo "<p><a href='insert_form.php'>Add a Student</a></p>";							// link to form.php to add a student to the database 
+	// link to form.php to add a student to the database 
+	echo "<p><a href='insert_form.php'>Add a Student</a></p>";							
 
-	$query  = "SELECT id, firstname, lastname FROM students ORDER BY $sortOrder;";	// select a way to sort the table, and then sort the table by that choice
+	// select a way to sort the table, and then sort the table by that choice
+	$query  = "SELECT id, firstname, lastname FROM students ORDER BY $sortOrder;";	
 	$result = $database->query($query);
-	
-	echo "<table id='db-table'>";														// display student table
+	// display student table
+	echo "<table id='db-table'>";														
 
 	// --------------------------------------
 	// SORT OPTIONS AS HYPERLINKS IN TABLE HEADINGS
@@ -99,15 +102,14 @@
 		echo "<td>" . $record["firstname"] . "</td>" ;
 		echo "<td>" . $record["lastname"] . "</td>" ;
 		echo "<td><a href='delete_form.php?delete=" . $record["id"] . "'>Delete</a></td>";
-		//Used to make sure the update forms populate the data
+		// Used to make sure the update forms populate the data
 		echo "<td><a href='update_form.php?update=" . $record["id"] . "'>Update</a></td>";
 		echo "</tr>";		
 	}
 
 	echo "</table>";
 
-	
-	$database->close();		// close the database connection
+	$database->close();
 	
 ?>
 

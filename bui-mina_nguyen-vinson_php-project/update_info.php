@@ -5,41 +5,42 @@
 $isValid = true;
 $isSuccess = false;
 
+//--- ERROR AND SUCCESS MESSAGES 
 $successMessages = array();
 $errorMessages = array();
 
 // Checking for set & empty
 //--- Studentnumber
 if(!isset($_POST['studentnumber']) || $_POST['studentnumber'] == "") {
-	$errorMessages[] = "<p>Please enter Studentnumber field...</p>";
+	$errorMessages[] = "<p>Please enter a student number in the field.</p>";
 	$isValid = false;
 }
 //--- Firstname
 if(!isset($_POST['firstname']) || $_POST['firstname'] == "") {
-	$errorMessages[] = "<p>Please enter Firstname field...</p>";
+	$errorMessages[] = "<p>Please enter a first name in the field.</p>";
 	$isValid = false;
 }
 //--- Lastname
 if(!isset($_POST['lastname']) || $_POST['lastname'] == "") {
-	$errorMessages[] = "<p>Please enter Lastname field...</p>";
+	$errorMessages[] = "<p>Please enter a last name in the field.</p>";
 	$isValid = false;
 }
  
  // test student number format
 $pattern = "/^a0[0-9]{7}$/i";
 if(preg_match($pattern, trim($_POST['studentnumber'])) != 1) {
-	$errorMessages[] = "<p>Error: Please enter correct Studentnumber format...</p>";
+	$errorMessages[] = "<p>Please enter a valid student number format.</p>";
 	$isValid = false;
 }
 
 // Test to only allow letters in name fields 
 $numbererror = "/[0-9]/";
 if(preg_match($numbererror, trim($_POST['firstname'])))  {
-	$errorMessages[] = "<p>Error: Please enter letters only in the firstname field...</p>";
+	$errorMessages[] = "<p>Please enter letters only in the 'first name' field.</p>";
 	$isValid = false;
 }
 if(preg_match($numbererror, trim($_POST['lastname'])))  {
-	$errorMessages[] = "<p>Error: Please enter letters only in the lastname field...</p>";
+	$errorMessages[] = "<p>Please enter letters only in the 'last name' field.</p>";
 	$isValid = false;
 }
  
@@ -53,15 +54,14 @@ if(!$isValid) {
 	die();
 }
 
- // Check database
+// load dbinfo.php to connect to db
  require_once("dbinfo.php");
-
- $database = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+// attempt db connection
+$database = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
  
- if(mysqli_connect_errno() !=0 ){
-	 die("<p>Uh oh... could not connect to database.</p>");
- }
- 
+if(mysqli_connect_errno() !=0 ){
+	die("<p>Sorry, we could not connect to the database.</p>");
+}
 
 // Variables & Sql injection
 if( isset($_POST["studentnumber"])) {
@@ -85,35 +85,33 @@ $sql 	= "UPDATE students SET id='$studentnumber', firstname='$firstname', lastna
 $result = $database->query($sql);
 
 if( $result == true){
-	echo "<p>YAY correct return</p>";
+	echo "<p>Query was returned.</p>";
 
 }else{
-	echo "<p>Could not update student</p>";
+	echo "<p>Sorry, we could not update the student information.</p>";
 }
 
 // Keep stored data for what the user inputted
 $recordsUpdated = $database->affected_rows;
 
 if($recordsUpdated > 0) {
-	$successMessages[] = "<p>$studentnumber $firstname $lastname record updated</p>";
+	$successMessages[] = "<p>$studentnumber $firstname $lastname record updated successfully.</p>";
 	$isSuccess = true;
 
 }else{
-	$errorMessages[] = "<p>$target $firstname $lastname record not updated</p>";
+	$errorMessages[] = "<p>$target $firstname $lastname record not updated.</p>";
 	$isValid = false;
 }
 
 if(!$isValid){
 	session_start();
 	$_SESSION['errorMessages'] = $errorMessages;
-   
 	header("Location: index.php");
 	die();
 }
 
 if($isSuccess = true){
 	$_SESSION['successMessages'] = $successMessages;
-   
 	header("Location: index.php");
 	die();
 }

@@ -1,10 +1,3 @@
-<!--
-    Display:
-		- Student Table
-		- Information about most recent user interaction
-		- Options to ADD, DELETE, and UPDATE records
--->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,8 +14,6 @@
 </header>
 
 <?php
-	// --------------------------------------
-	// THE BASICS -  DB, ERRORS, ETC
 
 	session_start();
 
@@ -51,15 +42,16 @@
 		// store completeed messages in array
 		$successMessages = $_SESSION['successMessages'];
         
-		foreach($successMessages as $successMessage){
+		foreach($successMessages as $successMessage) {
 			// should only require 1, so no need for 
 			echo "<p>".$successMessage."</p>";
 		}
-        
         // must unset messages
 		unset($_SESSION['successMessages']);
     }
 	
+	
+
 	$sortOrder = "id";
 	
 	if(isset($_GET['sortby'])) {
@@ -73,24 +65,6 @@
 		die("<p>Sorry, we could not connect to the database.</p>");	
 	}
 
-	/*
-									// default sorting is by id
-	$validChoices = array("id","firstname","lastname");		// choices to sort by...
-
-	// --------------------------------------
-	// DID USER USE "SORT BY" OPTIONS CORRECTLY?
-
-	// check if the url ".../index.php?choice=id" contains choices other than $validChoices
-	if ( isset($_GET['choice'] ) ) {
-		if ( in_array($_GET['choice'], $validChoices) ) {
-			$sortOrder = $_GET['choice'];	
-		}
-		else {
-			echo "<p><code>'".$_GET['choice']."'</code> is NOT a valid sort choice. You may only sort by <code>'ID'</code>, <code>'first name'</code>, and <code>'last name'</code>.</p>";
-		}
-	}
-		
-	*/
 	$sortOrder = $database->real_escape_string($sortOrder);				// use real_escape_string() to prevent sql attacks
 
 	// --------------------------------------
@@ -128,9 +102,10 @@
 		echo "<td><a href='update_form.php?update=" . $record["id"] . "'>Update</a></td>";
 		echo "</tr>";		
 	}
-	
+
 	echo "</table>";
 
+	
 	$database->close();		// close the database connection
 	
 ?>

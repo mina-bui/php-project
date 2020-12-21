@@ -45,7 +45,7 @@
     
 	<form method="POST" action="delete_info.php">
     
-        <p>You are deleting:<p>;
+        <p>You are deleting:<p>
         <!-- Corresponding Name from Database -->
         <p><?php echo $record["id"], ' ' , $record["firstname"], ' ' , $record["lastname"]?></p>
         

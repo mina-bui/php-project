@@ -1,10 +1,5 @@
-<!--
-    - form w/ inputs for id, firstname, last name, submit button
--->
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 	<title>TWD PHP Project | BCIT TWD PHP</title>
 	<meta charset = "utf-8" />
@@ -18,7 +13,7 @@
 
     <?php
 
-    session_start();
+    @session_start();
     //--- ERROR AND SUCCESS MESSAGES TO DISPLAY
     $messages = "";
     $successMessages = "";
@@ -56,23 +51,23 @@
 
 
     <!-- Display Student Table -->
-    <form method="POST" action="insert_info.php">
-        <fieldset>
+    <fieldset>
+        <form method="POST" action="insert_info.php">
             <legend>Add a Record</legend><br />
             <input type="hidden" name="add" value="add">
             <!-- student number -->
             <label for="studentnumber">Student #: </label><br />
-            <input type="text" name="studentnumber" id="studentnumber" /><br /><br />
+            <input type="text" name="studentnumber" id="studentnumber" /><br />
             <!-- first name -->
             <label for="firstname">First Name: </label><br />
-            <input type="text" name="firstname" id="firstname" /><br /><br />
+            <input type="text" name="firstname" id="firstname" /><br />
             <!-- last name -->
             <label for="lastname">Last Name: </label><br />
             <input type="text" name="lastname" id="lastname" /><br>
             <!-- submit button -->
             <input type="submit" value="Submit" class="button"/>
-        </fieldset>
-    </form>
+        </form>
+    </fieldset>
     <p><a href="index.php">Go Back</a></p>
 </body>
 

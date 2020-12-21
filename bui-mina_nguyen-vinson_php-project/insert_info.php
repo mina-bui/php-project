@@ -33,7 +33,18 @@ if( preg_match($pattern, trim($_POST['studentnumber'])) != 1) {
 	$errorMessages[] = "<p>Error: Please enter correct Studentnumber format...</p>";
 	$isValid = false;
 }
- 
+
+// Test to only allow letters in name fields 
+$numbererror = "/[0-9]/";
+if(preg_match($numbererror, trim($_POST['firstname'])))  {
+	$errorMessages[] = "<p>Error: Please enter letters only in the firstname field...</p>";
+	$isValid = false;
+}
+if(preg_match($numbererror, trim($_POST['lastname'])))  {
+	$errorMessages[] = "<p>Error: Please enter letters only in the lastname field...</p>";
+	$isValid = false;
+}
+
 // Display error message if any of these are incorrect
 if($isValid == false) {
 	session_start();

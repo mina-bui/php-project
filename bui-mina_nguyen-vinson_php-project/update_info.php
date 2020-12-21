@@ -1,6 +1,6 @@
 <?php
 
-session_start();
+@session_start();
 
 $isValid = true;
 $isSuccess = false;
@@ -31,17 +31,27 @@ if(preg_match($pattern, trim($_POST['studentnumber'])) != 1) {
 	$errorMessages[] = "<p>Error: Please enter correct Studentnumber format...</p>";
 	$isValid = false;
 }
+
+// Test to only allow letters in name fields 
+$numbererror = "/[0-9]/";
+if(preg_match($numbererror, trim($_POST['firstname'])))  {
+	$errorMessages[] = "<p>Error: Please enter letters only in the firstname field...</p>";
+	$isValid = false;
+}
+if(preg_match($numbererror, trim($_POST['lastname'])))  {
+	$errorMessages[] = "<p>Error: Please enter letters only in the lastname field...</p>";
+	$isValid = false;
+}
  
 // Display error message if any of these are incorrect
 if(!$isValid) {
-	session_start();
+	@session_start();
 	// display error messages
 	$_SESSION['errorMessages'] = $errorMessages;
 
-	header("Location: update_info.php");
+	header("Location: update_form.php");
 	die();
 }
-
 
  // Check database
  require_once("dbinfo.php");
@@ -98,7 +108,6 @@ if(!$isValid){
 	$_SESSION['errorMessages'] = $errorMessages;
    
 	header("Location: index.php");
-	
 	die();
 }
 
@@ -106,7 +115,6 @@ if($isSuccess = true){
 	$_SESSION['successMessages'] = $successMessages;
    
 	header("Location: index.php");
-	
 	die();
 }
 

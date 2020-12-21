@@ -20,7 +20,7 @@
     $database = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);			// attempt db connection
     
     // protect from sql injections
-    if (isset($_GET["update"])) {
+    if ( isset($_GET["update"])) {
 		$id = $database->real_escape_string( trim($_GET["update"]) );
     }
     
@@ -33,10 +33,11 @@
 
     $database->close();
     ?>
+    
     <fieldset>
     <legend>Update a Record</legend>
     <form method="POST" action="update_info.php">
-		<input type="hidden" name="target" value="<?php echo $record["id"] ?>" />
+		
 		<input type="hidden" name="update" value="update" />
         
         <!-- Studentnumber -->

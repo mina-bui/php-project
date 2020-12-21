@@ -99,6 +99,7 @@
 		echo "<td>" . $record["firstname"] . "</td>" ;
 		echo "<td>" . $record["lastname"] . "</td>" ;
 		echo "<td><a href='delete_form.php?delete=" . $record["id"] . "'>Delete</a></td>";
+		//Used to make sure the update forms populate the data
 		echo "<td><a href='update_form.php?update=" . $record["id"] . "'>Update</a></td>";
 		echo "</tr>";		
 	}

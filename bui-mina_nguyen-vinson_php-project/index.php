@@ -24,7 +24,7 @@
 	// --------------------------------------
 	// THE BASICS -  DB, ERRORS, ETC
 
-	@session_start();
+	session_start();
 
 	//--- ERROR AND SUCCESS MESSAGES 
     $messages = "";
@@ -59,9 +59,13 @@
         // must unset messages
 		unset($_SESSION['successMessages']);
     }
-
-
-
+	
+	$sortOrder = "id";
+	
+	if(isset($_GET['sortby'])) {
+		$sortOrder = $_GET['sortby'];
+	}
+	
 	require_once("dbinfo.php");											// load dbinfo.php to connect to db
 
 	$database = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);			// attempt db connection
@@ -69,10 +73,8 @@
 		die("<p>Sorry, we could not connect to the database.</p>");	
 	}
 
-	
-    
-    
-	$sortOrder = "id";										// default sorting is by id
+	/*
+									// default sorting is by id
 	$validChoices = array("id","firstname","lastname");		// choices to sort by...
 
 	// --------------------------------------
@@ -88,6 +90,7 @@
 		}
 	}
 		
+	*/
 	$sortOrder = $database->real_escape_string($sortOrder);				// use real_escape_string() to prevent sql attacks
 
 	// --------------------------------------
@@ -96,8 +99,9 @@
 	echo "<h2>Students</h2>";
 	echo "<p><a href='insert_form.php'>Add a Student</a></p>";							// link to form.php to add a student to the database 
 
-	$query = "SELECT id, firstname, lastname FROM students ORDER BY ".$sortOrder.";";	// select a way to sort the table, and then sort the table by that choice
+	$query  = "SELECT id, firstname, lastname FROM students ORDER BY $sortOrder;";	// select a way to sort the table, and then sort the table by that choice
 	$result = $database->query($query);
+	
 	echo "<table id='db-table'>";														// display student table
 
 	// --------------------------------------
@@ -107,7 +111,7 @@
 	$fieldObjects = $result->fetch_fields();
 	echo "<tr>";
 	foreach ($fieldObjects as $fieldObject) {
-		echo "<th><a href='index.php?choice=$fieldObject->name'>" .$fieldObject->name. "</a></th>" ;
+		echo "<th><a href='index.php?sortby=$fieldObject->name'>" .$fieldObject->name. "</a></th>" ;
 	}
 	echo "</tr>";
 
@@ -120,10 +124,11 @@
 		echo "<td>" . $record["id"] . "</td>" ;
 		echo "<td>" . $record["firstname"] . "</td>" ;
 		echo "<td>" . $record["lastname"] . "</td>" ;
-		echo "<td><a href='delete_form.php?id=".$record["id"]."'>delete</a></td>";
-		echo "<td><a href='update_form.php?id=".$record["id"]."'>update</a></td>";
+		echo "<td><a href='delete_form.php?delete=" . $record["id"] . "'>Delete</a></td>";
+		echo "<td><a href='update_form.php?update=" . $record["id"] . "'>Update</a></td>";
 		echo "</tr>";		
 	}
+	
 	echo "</table>";
 
 	$database->close();		// close the database connection

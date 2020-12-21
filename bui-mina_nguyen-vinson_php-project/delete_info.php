@@ -26,13 +26,12 @@ $firstname     = "";
 $lastname      = "";
 
 // Variables
-
 if( isset($_POST["studentnumber"])){
 	$studentnumber = $database->real_escape_string( trim($_POST["studentnumber"]) );
 }
 
 $firstname = trim($_POST['firstname']);
-$lastname = trim($_POST['lastname']);
+$lastname  = trim($_POST['lastname']);
 
 
 $isValid = true;

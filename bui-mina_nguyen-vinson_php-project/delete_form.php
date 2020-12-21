@@ -17,7 +17,6 @@
     <h2>Delete a Student</h2>
 
     <?php
-    
     @session_start();
 
     require_once("dbinfo.php");
@@ -38,7 +37,6 @@
     
     // finish and close the database
     $database->close();
-
     ?>
 
 
